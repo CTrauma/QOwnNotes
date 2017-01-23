@@ -346,6 +346,15 @@ bool Utils::Misc::isInPortableMode() {
 }
 
 /**
+ * Returns true if the user is using an absolute notes path
+ *
+ * @return
+ */
+bool Utils::Misc::isUsingAbsNotesPath() {
+    return qApp->property("abs_notes_path").toBool();
+}
+
+/**
  * Prepends the portable data path if we are in portable mode
  *
  * @param path
@@ -357,7 +366,7 @@ QString Utils::Misc::prependPortableDataPathIfNeeded(QString path,
         return "";
     }
 
-    if (isInPortableMode()) {
+     if (isInPortableMode() && !isUsingAbsNotesPath()) {
         QString portableDataPath(Utils::Misc::portableDataPath());
 
         // check if the path already starts with the portable data path
@@ -376,7 +385,7 @@ QString Utils::Misc::prependPortableDataPathIfNeeded(QString path,
  * @return
  */
 QString Utils::Misc::makePathRelativeToPortableDataPathIfNeeded(QString path) {
-    if (isInPortableMode()) {
+    if (isInPortableMode() && !isUsingAbsNotesPath()) {
 //        path.remove(QRegularExpression(
 //                "^" + QRegularExpression::escape(portableDataPath()) +
 //                        "[\\//]"));

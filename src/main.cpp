@@ -159,6 +159,7 @@ bool mainStartupMisc() {
 int main(int argc, char *argv[]) {
     QString release = RELEASE;
     bool portable = false;
+    bool abs_notes_path = false;
 
     for (int i = 0; i < argc; ++i) {
         QString arg(argv[i]);
@@ -167,6 +168,8 @@ int main(int argc, char *argv[]) {
             release = "Snapcraft";
         } else if (arg == "--portable") {
             portable = true;
+        }else if ( arg == "--abs_notes_path"){
+            abs_notes_path = true;
         } else if (arg == "--after-update") {
             qWarning() << __func__ << " - 'arg': " << arg;
 #if not defined(Q_OS_WIN)
@@ -271,6 +274,7 @@ int main(int argc, char *argv[]) {
         app.setProperty("release", release);
         app.setProperty("portable", portable);
         app.setProperty("singleApplication", true);
+		app.setProperty("abs_notes_path", abs_notes_path);
 
 #ifndef QT_DEBUG
         LOAD_RELEASE_TRANSLATIONS(app)
@@ -307,10 +311,11 @@ int main(int argc, char *argv[]) {
         return app.exec();
     } else {
         // use a normal QApplication if multiple instances of the app are
-        // allowed
+        // allowed 
         QApplication app(argc, argv);
         app.setProperty("release", release);
         app.setProperty("portable", portable);
+        app.setProperty("abs_notes_path", abs_notes_path);
 
 #ifndef QT_DEBUG
         LOAD_RELEASE_TRANSLATIONS(app)
